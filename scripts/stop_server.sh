@@ -1,1 +1,4 @@
-#!/bin/bashecho "Nothing to stop. Skipping ApplicationStop."exit 0
+#!/bin/bash
+
+echo "Nothing to stop. Skipping ApplicationStop."
+exit 0
