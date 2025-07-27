@@ -1,23 +1,26 @@
 #!/bin/bash
 
-# Log output to /tmp/deploy.log for debugging
-exec > >(tee -a /tmp/deploy.log) 2>&1
+set -e  # Exit on any error
+exec > >(tee /tmp/start_server.log) 2>&1  # Log output
 
-echo "[INFO] Running start_server.sh"
+echo "[INFO] Starting start_server.sh script..."
 
-# Check current user and directory
-echo "[INFO] Whoami: $(whoami)"
-echo "[INFO] Current directory: $(pwd)"
-echo "[INFO] Listing contents:"
-ls -la
+APP_DIR="/home/ec2-user/app"
 
 # Create the app directory if it doesn't exist
-mkdir -p /home/ec2-user/app
+echo "[INFO] Creating directory: $APP_DIR"
+mkdir -p "$APP_DIR"
 
 # Move to the app directory
-cd /home/ec2-user/app || { echo "[ERROR] Failed to change directory"; exit 1; }
+cd "$APP_DIR"
+echo "[INFO] Changed directory to $(pwd)"
 
-# Start a simple HTTP server in the background
+# Copy the HTML file from the deployment archive
+echo "[INFO] Copying index.html to $APP_DIR"
+cp /home/ec2-user/DevopsProject1/index.html .
+
+# Start the HTTP server
+echo "[INFO] Starting HTTP server..."
 nohup python3 -m http.server 80 &
 
-echo "[INFO] Server started on port 80"
+echo "[INFO] HTTP server started successfully."
