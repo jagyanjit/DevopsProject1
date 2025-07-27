@@ -1,3 +1,5 @@
+chmod +x /home/ec2-user/app/scripts/*.sh
+
 #!/bin/bash
 
 # Create the app directory if it doesn't exist
