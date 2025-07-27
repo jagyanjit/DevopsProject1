@@ -4,6 +4,10 @@ phases:
   build:
     commands:
       - echo "Build started"
+  post_build:
+    commands:
+      - echo "Making scripts executable"
+      - chmod +x scripts/*.sh
 
 artifacts:
   files:
