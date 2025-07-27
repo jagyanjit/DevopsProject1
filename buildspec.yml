@@ -3,8 +3,8 @@ version: 0.2
 phases:
   build:
     commands:
-      - echo "Build step started"
+      - echo "Build started"
 
 artifacts:
   files:
-    - index.html
+    - '**/*'
