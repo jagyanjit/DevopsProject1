@@ -19,7 +19,7 @@ jobs:
           working-directory: ./terraform
 
       - name: Run Trivy Docker image scan
-        uses: aquasecurity/trivy-action@v0.30.0
+        uses: aquasecurity/trivy-action@v0.64.1
         with:
           image-ref: devopsproject1/production:latest     # <-- Match your pushed Docker image
 
