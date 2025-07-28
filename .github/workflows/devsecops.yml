@@ -1,0 +1,49 @@
+name: DevSecOps Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run tfsec on Terraform
+        uses: aquasecurity/tfsec-action@v1.0.0
+        with:
+          working-directory: ./terraform
+
+      - name: Run Trivy Docker image scan
+        uses: aquasecurity/trivy-action@v0.13.0
+        with:
+          image-ref: devopsproject1/production:latest     # <-- Match your pushed Docker image
+
+  deploy:
+    needs: security-scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.29.0'
+
+      - name: Load kubeconfig from secret
+        run: echo "$KUBECONFIG_DATA" | base64 -d > $HOME/.kube/config
+        env:
+          KUBECONFIG_DATA: ${{ secrets.KUBECONFIG_DATA }}
+
+      - name: Apply SealedSecret
+        run: kubectl apply -f k8s/sealed-secrets/sealedsecret.yaml
+
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
