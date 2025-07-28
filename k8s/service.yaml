@@ -8,5 +8,5 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8080            # Must match your containerPort above
-  type: NodePort                  # Use LoadBalancer on EKS/cloud, NodePort for Minikube
+      targetPort: 8080            
+  type: NodePort                  
