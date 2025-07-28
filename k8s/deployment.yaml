@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devopsproject1-app
+  labels:
+    app: devopsproject1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: devopsproject1
+  template:
+    metadata:
+      labels:
+        app: devopsproject1
+    spec:
+      containers:
+        - name: devopsproject1-container
+          image: devopsproject1/production:latest   # <-- Replace with your Docker Hub/org/image name/tag
+          ports:
+            - containerPort: 8080                   # <-- Adjust if your app listens on another port
+          env:
+            - name: SECRET_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: devopsproject1-secret       # Must match the SealedSecret and Secret metadata.name
+                  key: password
