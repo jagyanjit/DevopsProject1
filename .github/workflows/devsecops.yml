@@ -16,7 +16,7 @@ jobs:
       - name: Run tfsec on Terraform
         uses: aquasecurity/tfsec-action@v1.0.0
         with:
-          working-directory: ./terraform
+          working_directory: ./terraform
 
       - name: Run Trivy Docker image scan
         uses: aquasecurity/trivy-action@master
