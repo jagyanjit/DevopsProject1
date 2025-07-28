@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: devopsproject1-service
+spec:
+  selector:
+    app: devopsproject1
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080            # Must match your containerPort above
+  type: NodePort                  # Use LoadBalancer on EKS/cloud, NodePort for Minikube
